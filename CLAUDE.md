@@ -225,3 +225,5 @@ mcp__context7__get-library-docs "/spring-projects/spring-boot"
 - **GitHub 仓库**: https://github.com/zhailiang23/tiantianai.git
 - **Vue Vben Admin 文档**: https://doc.vben.pro/
 - **CCPM 文档**: 见项目根目录 README.md
+- 后端包结构说明: com.tiantianai下面应该是按业务组织的业务模块,如 user, auth. 业务包下面是 model, controller, service 包. 多个业务公用的东西放在 com.tiantianai.shared 
+包里,包括 config, util等

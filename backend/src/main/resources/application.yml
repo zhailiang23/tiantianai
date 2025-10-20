@@ -3,9 +3,9 @@ spring:
     name: tiantianai-backend
 
   datasource:
-    url: jdbc:mysql://localhost:3306/tiantianai?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3307/tiantianai?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: 123456
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -32,3 +32,10 @@ logging:
     com.tiantianai: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
+
+# JWT 配置
+jwt:
+  secret: tiantianai-secret-key-please-change-in-production-environment-with-a-very-long-secret
+  expiration: 86400000  # 24小时（毫秒）
+  token-prefix: "Bearer "
+  header-name: Authorization
