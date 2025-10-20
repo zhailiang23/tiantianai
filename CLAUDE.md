@@ -1,3 +1,22 @@
+<!-- OPENSPEC:START -->
+# OpenSpec Instructions
+
+These instructions are for AI assistants working in this project.
+
+Always open `@/openspec/AGENTS.md` when the request:
+- Mentions planning or proposals (words like proposal, spec, change, plan)
+- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
+- Sounds ambiguous and you need the authoritative spec before coding
+
+Use `@/openspec/AGENTS.md` to learn:
+- How to create and apply change proposals
+- Spec format and conventions
+- Project structure and guidelines
+
+Keep this managed block so 'openspec update' can refresh the instructions.
+
+<!-- OPENSPEC:END -->
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -15,12 +34,7 @@ TianTianAI 是一个全栈 AI 应用项目,采用前后端分离架构:
 tiantianai/
 ├── backend/           # Spring Boot 后端服务
 ├── frontend/          # Vue 3 前端 (pnpm monorepo)
-├── .claude/           # Claude Code PM 项目管理系统
-│   ├── commands/      # 项目管理命令
-│   ├── epics/         # Epic 工作空间 (已在 .gitignore)
-│   ├── prds/          # 产品需求文档
-│   └── context/       # 项目上下文
-└── ccpm/             # CCPM 脚本
+└── openspec/          # OpenSpec 项目规范和文档
 ```
 
 ### 后端架构 (backend/)
@@ -120,40 +134,7 @@ docker run -d --name tiantianai-mysql \
 docker exec -it tiantianai-mysql mysql -uroot -p
 ```
 
-### 项目管理命令 (CCPM)
-使用 Claude Code PM 系统管理开发流程:
-```bash
-# 查看帮助
-/pm:help
-
-# 创建新功能 PRD
-/pm:prd-new feature-name
-
-# 将 PRD 转换为技术实现方案
-/pm:prd-parse feature-name
-
-# 分解并同步到 GitHub
-/pm:epic-oneshot feature-name
-
-# 开始实现任务
-/pm:issue-start <issue-number>
-
-# 查看项目状态
-/pm:status
-
-# 获取下一个优先任务
-/pm:next
-```
-
 ## 开发工作流
-
-### 新功能开发流程
-1. **创建 PRD**: `/pm:prd-new feature-name` - 头脑风暴并创建产品需求文档
-2. **技术规划**: `/pm:prd-parse feature-name` - 将 PRD 转换为技术实现方案
-3. **任务分解**: `/pm:epic-decompose feature-name` 或使用 `/pm:epic-oneshot` 一步完成
-4. **同步 GitHub**: 任务自动创建为 GitHub Issues
-5. **并行开发**: 使用 `/pm:issue-start <number>` 启动专门的 agent 并行处理多个任务
-6. **进度同步**: `/pm:issue-sync <number>` 更新进度到 GitHub
 
 ### Git 提交规范
 遵循 Conventional Commits 规范:
@@ -185,7 +166,8 @@ docker exec -it tiantianai-mysql mysql -uroot -p
 
 ### 开发环境
 - **后端端口**: 8080
-- **前端端口**: 5173 (dev server)
+- **前端端口**: 5666 (dev server, 可配置)
+- **数据库端口**: 3307 (映射到容器内 3306)
 - **数据库**: MySQL 8.0+, UTF-8MB4 编码
 - **Node 版本**: >=20.10.0
 - **pnpm 版本**: >=9.12.0
@@ -210,12 +192,6 @@ mcp__context7__resolve-library-id "spring boot"
 mcp__context7__get-library-docs "/spring-projects/spring-boot"
 ```
 
-### 并行开发优化
-- CCPM 支持多个 agent 并行工作在同一个 epic 的不同任务上
-- 使用 Git worktrees 实现隔离的并行开发环境
-- 主对话线程保持简洁,实现细节由子 agent 处理
-- 任务标记 `parallel: true` 可启用无冲突并发开发
-
 ## 浏览器支持
 
 前端支持现代浏览器 (Chrome 80+, Edge, Firefox, Safari 最新两个版本),不支持 IE
@@ -224,6 +200,8 @@ mcp__context7__get-library-docs "/spring-projects/spring-boot"
 
 - **GitHub 仓库**: https://github.com/zhailiang23/tiantianai.git
 - **Vue Vben Admin 文档**: https://doc.vben.pro/
-- **CCPM 文档**: 见项目根目录 README.md
-- 后端包结构说明: com.tiantianai下面应该是按业务组织的业务模块,如 user, auth. 业务包下面是 model, controller, service 包. 多个业务公用的东西放在 com.tiantianai.shared 
-包里,包括 config, util等
+- **项目规范**: 见 openspec/project.md
+
+## 后端包结构说明
+
+com.tiantianai 下面按业务组织模块，如 user, auth。业务包下面是 model, controller, service 包。多个业务公用的东西放在 com.tiantianai.shared 包里，包括 config, util, security, exception, common 等。
